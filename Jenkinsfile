@@ -22,7 +22,7 @@ properties(
 
 String channel = '#platform-engineering'
 
-node('docker') {
+node('slave') {
   try {
     stage('Checkout') {
       deleteDir()
