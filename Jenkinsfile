@@ -32,8 +32,8 @@ node('slave') {
     stage('Run performance tests') {
       try {
         env.DRAFT_STORE_BASE_URL = 'https://devdraftstorelb.moneyclaim.reform.hmcts.net:4301/drafts'
-        env.IDAM_URL = 'http://betaDevBccidamAppLB.reform.hmcts.net:4551'
-        env.S2S_URL =  'http://betaDevBccidamAppLB.reform.hmcts.net:4552'
+        env.IDAM_URL = 'http://betadevbccidamapplb.reform.hmcts.net:80'
+        env.S2S_URL  = 'http://betadevbccidams2slb.reform.hmcts.net:80'
 
         sh "./gradlew gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts"
 
