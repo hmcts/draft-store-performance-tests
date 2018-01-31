@@ -56,6 +56,6 @@ class CreateMultipleDrafts extends Simulation {
 
   setUp(
     registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
-    createAndReadDrafts.inject(nothingFor(15.seconds), rampUsers(100).over(5.seconds))
+    createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
   ).protocols(httpProtocol)
 }
