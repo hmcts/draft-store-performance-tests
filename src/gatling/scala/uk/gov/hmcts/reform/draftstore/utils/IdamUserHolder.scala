@@ -10,7 +10,13 @@ object IdamUserHolder {
   private val deque = new LinkedBlockingDeque[User]()
 
   def push(user: User): Unit = deque.push(user)
-  def pop() : User = deque.pop()
+
+  def pop(): Option[User] = synchronized {
+    deque.peekFirst() match {
+      case null => None
+      case _ => Some(deque.pop())
+    }
+  }
 
 }
 
