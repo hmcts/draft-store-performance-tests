@@ -31,13 +31,17 @@ class CreateMultipleDrafts extends Simulation {
 
   val createAndReadDrafts =
     scenario("Create multiple drafts")
-      .feed(Iterator.continually({
-        val user = IdamUserHolder.pop()
-        Map(
-          "email" -> user.email,
-          "user_token" -> user.token
-        )
-      }))
+      .feed(
+        IdamUserHolder
+          .pop()
+          .map(user =>
+            Map(
+              "email" -> user.email,
+              "user_token" -> user.token
+            )
+          )
+          .iterator
+      )
       .exec(leaseServiceToken)
       .during(1.minute)(
         exec(
