@@ -20,7 +20,7 @@ properties(
 //noinspection GroovyUnusedAssignment Jenkins requires an _ if not importing any classes
 @Library('Reform') _
 
-String channel = '#platform-engineering'
+String channel = '#rpe-build-notices'
 
 node('slave') {
   try {
