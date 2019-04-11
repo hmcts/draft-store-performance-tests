@@ -1,0 +1,35 @@
+name: draft-store-perf-test
+trigger: none
+pr: none
+variables:
+  keyvaultName: 's2s-aat'
+  serviceConnection: 'azurerm-nonprod'
+
+jobs:
+- job: DraftStorePerfTests
+  pool:
+    name: hmcts-agent-pool
+  workspace:
+    clean: all
+  steps:
+  - task: AzureKeyVault@1
+    displayName: 'Get secrets from Keyvault'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      keyVaultName: $(keyvaultName)
+      secretsFilter: 'microservicekey-draftStoreTests'
+  - task: Bash@3
+    displayName: 'Execute Gatling Tests'
+    inputs:
+      targetType: inline
+      failOnStderr: false
+      script: |
+        ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
+    env:
+      DRAFT_STORE_BASE_URL: https://draft-store-service.service.core-compute-aat.internal
+      S2S_URL: https://rpe-service-auth-provider.service.core-compute-aat.internal
+      IDAM_URL: https://idam-api.aat.platform.hmcts.net
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'gatlingReport'
+      targetPath: 'build/reports'
