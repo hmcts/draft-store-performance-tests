@@ -8,7 +8,7 @@ variables:
 jobs:
   - job: DraftStorePerfTests
     pool:
-      name: hmcts-sandbox-agent-pool
+      name: mgmt-aks-sandbox
     workspace:
       clean: all
     steps:
