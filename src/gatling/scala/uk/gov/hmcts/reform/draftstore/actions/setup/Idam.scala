@@ -52,7 +52,7 @@ object Idam {
       .exec(
         http("Sign in to IDAM")
           .post(idamUrl + "/oauth2/authorize")
-          .header(Authorization, "Basic ${loginHeader}")
+          .header(Authorization, "${loginHeader}")
           .formParam("response_type", authType)
           .formParam("redirect_uri", idamRedirectUri)
           .formParam("client_id", idamClientId)
