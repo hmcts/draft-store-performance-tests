@@ -26,7 +26,7 @@ jobs:
           script: |
             ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
         env:
-          DRAFT_STORE_BASE_URL: https://draft-store-service.service.core-compute-sprod.internal
+          DRAFT_STORE_BASE_URL: https://draft-store-service-sprod.service.core-compute-sprod.internal
           S2S_URL: https://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal
           IDAM_URL: http://idam-api-idam-sprod.service.core-compute-idam-sprod.internal
           IDAM_CLIENT_SECRET: $(idam-client-secret-for-tests)
