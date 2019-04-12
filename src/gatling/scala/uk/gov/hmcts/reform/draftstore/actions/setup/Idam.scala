@@ -52,6 +52,7 @@ object Idam {
       .exec(
         http("Sign in to IDAM")
           .post(idamUrl + "/oauth2/authorize")
+          .header(ContentType, ApplicationFormUrlEncoded)
           .header(Authorization, "${loginHeader}")
           .formParam("response_type", authType)
           .formParam("redirect_uri", idamRedirectUri)
@@ -61,6 +62,7 @@ object Idam {
       .exec(
         http("Exchange code")
           .post(idamUrl + "/oauth2/token")
+          .header(ContentType, ApplicationFormUrlEncoded)
           .formParam("code", "${auth_code}")
           .formParam("grant_type", grantType)
           .formParam("redirect_uri", idamRedirectUri)
