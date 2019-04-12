@@ -15,7 +15,6 @@ import scala.util.Random
 object Idam {
 
   private val idamUrl = ConfigFactory.load().getString("auth.idam.url")
-
   private val idamClientId = ConfigFactory.load().getString("auth.idam.clientId")
   private val idamClientSecret = ConfigFactory.load().getString("auth.idam.clientSecret")
   private val idamRedirectUri = ConfigFactory.load().getString("auth.idam.redirectUri")
