@@ -2,25 +2,18 @@ name: draft-store-perf-test
 trigger: none
 pr: none
 variables:
-  S2sKeyvaultName: 's2s-sprod'
   DraftStoreKeyVaultName: 'draft-store-sprod'
-  serviceConnection: 'azurerm-nonprod'
+  serviceConnection: 'azurerm-sandbox'
 
 jobs:
   - job: DraftStorePerfTests
     pool:
-      name: hmcts-agent-pool
+      name: hmcts-sandbox-agent-pool
     workspace:
       clean: all
     steps:
       - task: AzureKeyVault@1
-        displayName: 'Get secrets from s2s Keyvault'
-        inputs:
-          azureSubscription: $(serviceConnection)
-          keyVaultName: $(S2sKeyvaultName)
-          secretsFilter: 'microservicekey-draftStoreTests'
-      - task: AzureKeyVault@1
-        displayName: 'Get secrets from draft-store Keyvault'
+        displayName: 'Get secrets from draft-store keyvault'
         inputs:
           azureSubscription: $(serviceConnection)
           keyVaultName: $(DraftStoreKeyvaultName)
