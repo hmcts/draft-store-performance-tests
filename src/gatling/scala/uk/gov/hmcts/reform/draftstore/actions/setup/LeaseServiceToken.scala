@@ -24,8 +24,14 @@ object LeaseServiceToken {
       .exec(
         http("Lease service token")
           .post(s2sUrl + "/testing-support/lease")
-          .header(ContentType, ApplicationFormUrlEncoded)
-          .formParam("microservice", "${service_name}")
+          .header(ContentType, ApplicationJson)
+          .body(StringBody(
+            """
+                {
+                  "microservice": "${service_name}"
+                }
+            """
+          ))
           .check(bodyString.saveAs("service_token"))
       )
 }
