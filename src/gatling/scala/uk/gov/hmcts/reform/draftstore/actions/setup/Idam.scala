@@ -41,10 +41,11 @@ object Idam {
                 "email": "${email}",
                 "forename": "John",
                 "surname": "Smith",
-                "password": "password"
+                "password": "Pazzw0rd123"
               }
             """
           ))
+          .check(status.is(204))
       )
       .exec(session => {
         session.set("loginHeader", buildLoginHeader(session("email").as[String], "password"))
