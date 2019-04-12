@@ -20,7 +20,6 @@ object Idam {
   private val idamClientSecret = ConfigFactory.load().getString("auth.idam.clientSecret")
   private val idamRedirectUri = ConfigFactory.load().getString("auth.idam.redirectUri")
 
-  private val basicHeader = "Basic"
   private val authType = "code"
   private val grantType = "authorization_code"
 
@@ -45,7 +44,7 @@ object Idam {
               }
             """
           ))
-          .check(status.is(204))
+          .check(status.is(201))
       )
       .exec(session => {
         session.set("loginHeader", buildLoginHeader(session("email").as[String], "password"))
@@ -53,11 +52,10 @@ object Idam {
       .exec(
         http("Sign in to IDAM")
           .post(idamUrl + "/oauth2/authorize")
-          .header(basicHeader, "${loginHeader}")
+          .header(Authorization, "Basic ${loginHeader}")
           .formParam("response_type", authType)
           .formParam("redirect_uri", idamRedirectUri)
           .formParam("client_id", idamClientId)
-          //.check(jsonPath("$['access-token']").saveAs("user_token"))
           .check(jsonPath("$['code']").saveAs("auth_code"))
       )
       .exec(
