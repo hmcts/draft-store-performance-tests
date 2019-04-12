@@ -21,7 +21,6 @@ object Idam {
 
   private val authType = "code"
   private val grantType = "authorization_code"
-  private val password = "Pazzw0rd123"
 
 
   private val randomEmailFeeder =
@@ -41,14 +40,14 @@ object Idam {
                 "email": "${email}",
                 "forename": "John",
                 "surname": "Smith",
-                "password": "${password}"
+                "password": "Pazzw0rd123"
               }
             """
           ))
           .check(status.is(201))
       )
       .exec(session => {
-        session.set("loginHeader", buildLoginHeader(session("email").as[String], s"${password}"))
+        session.set("loginHeader", buildLoginHeader(session("email").as[String], "Pazzw0rd123"))
       })
       .exec(
         http("Sign in to IDAM")
