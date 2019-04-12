@@ -21,6 +21,8 @@ object Idam {
 
   private val authType = "code"
   private val grantType = "authorization_code"
+  private val password = "Pazzw0rd123"
+
 
   private val randomEmailFeeder =
     Iterator.continually(
@@ -39,14 +41,14 @@ object Idam {
                 "email": "${email}",
                 "forename": "John",
                 "surname": "Smith",
-                "password": "Pazzw0rd123"
+                "password": "${password}"
               }
             """
           ))
           .check(status.is(201))
       )
       .exec(session => {
-        session.set("loginHeader", buildLoginHeader(session("email").as[String], "password"))
+        session.set("loginHeader", buildLoginHeader(session("email").as[String], s"${password}"))
       })
       .exec(
         http("Sign in to IDAM")
