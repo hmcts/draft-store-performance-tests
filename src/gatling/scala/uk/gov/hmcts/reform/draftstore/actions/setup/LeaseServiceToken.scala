@@ -18,9 +18,12 @@ object LeaseServiceToken {
   private val s2sSecret = ConfigFactory.load().getString("auth.s2s.secret")
 
   private val serviceNameFeeder =
-    Iterator.continually(Map("service_name" -> ("service_" + Random.nextInt(10))))
-
-  private val totp = (new GoogleAuthenticator()).getTotpPassword(s2sSecret)
+    Iterator.continually(
+      Map(
+        "service_name" -> ("service_" + Random.nextInt(10)),
+        "totp" -> new GoogleAuthenticator().getTotpPassword(s2sSecret)
+      )
+    )
 
   /**
     * Calls S2S service to retrieve service token later used in auth headers sent to draft-store
