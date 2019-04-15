@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.draftstore.actions.setup
 
 import com.typesafe.config.ConfigFactory
+import com.warrenstrange.googleauth.GoogleAuthenticator
+
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.HeaderNames._
@@ -12,9 +14,13 @@ import scala.util.Random
 object LeaseServiceToken {
 
   private val s2sUrl = ConfigFactory.load().getString("auth.s2s.url")
+  private val s2sTesting = ConfigFactory.load().getBoolean("auth.s2s.testing")
+  private val s2sSecret = ConfigFactory.load().getString("auth.s2s.secret")
 
   private val serviceNameFeeder =
     Iterator.continually(Map("service_name" -> ("service_" + Random.nextInt(10))))
+
+  private val totp = (new GoogleAuthenticator()).getTotpPassword(s2sSecret)
 
   /**
     * Calls S2S service to retrieve service token later used in auth headers sent to draft-store
@@ -23,12 +29,14 @@ object LeaseServiceToken {
     feed(serviceNameFeeder)
       .exec(
         http("Lease service token")
-          .post(s2sUrl + "/testing-support/lease")
+          .post(s2sUrl + "/lease")
           .header(ContentType, ApplicationJson)
+          .header(Accept, TextPlain)
           .body(StringBody(
             """
                 {
-                  "microservice": "${service_name}"
+                  "microservice": "DRAFT_STORE_TESTS",
+                  "oneTimePassword": "${totp}"
                 }
             """
           ))
