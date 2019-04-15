@@ -33,7 +33,7 @@ jobs:
           script: |
             ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
         env:
-          DRAFT_STORE_BASE_URL: https://draft-store-service-sprod.service.core-compute-sprod.internal
+          DRAFT_STORE_BASE_URL: https://draft-store-service-sprod.service.core-compute-sprod.internal/drafts
           S2S_URL: https://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal
           S2S_TESTING: false
           S2S_SECRET: $(microservicekey-draftStoreTests)
