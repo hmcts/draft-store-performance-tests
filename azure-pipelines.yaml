@@ -8,6 +8,7 @@ variables:
 
 jobs:
   - job: DraftStorePerfTests
+    timeoutInMinutes: 0
     pool:
       name: mgmt-aks-sandbox
     workspace:

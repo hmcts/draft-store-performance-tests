@@ -56,8 +56,8 @@ class CreateMultipleDrafts extends Simulation {
 
   setUp(
     // Load test over 1 hour - settings
-    registerAndSignIn.inject(rampUsers(3000).over(600.seconds)),
-    createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(3000).over(600.seconds))
+    registerAndSignIn.inject(rampUsers(3000).over(20.minutes)),
+    createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(3000).over(20.minutes))
     // Regression (pipeline) - settings
     //registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
     //createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
