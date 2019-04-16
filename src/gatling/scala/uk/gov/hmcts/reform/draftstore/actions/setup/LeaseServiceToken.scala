@@ -17,11 +17,13 @@ object LeaseServiceToken {
   private val s2sTesting = ConfigFactory.load().getBoolean("auth.s2s.testing")
   private val s2sSecret = ConfigFactory.load().getString("auth.s2s.secret")
 
+  private val authenticator = new GoogleAuthenticator()
+
   private val serviceNameFeeder =
     Iterator.continually(
       Map(
         "service_name" -> ("service_" + Random.nextInt(10)),
-        "totp" -> new GoogleAuthenticator().getTotpPassword(s2sSecret)
+        "totp" -> authenticator.getTotpPassword(s2sSecret)
       )
     )
 
