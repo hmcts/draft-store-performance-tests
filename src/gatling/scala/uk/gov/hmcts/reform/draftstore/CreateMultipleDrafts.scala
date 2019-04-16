@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.draftstore
 
-import java.util.concurrent.atomic.AtomicInteger
-
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
@@ -23,28 +21,37 @@ class CreateMultipleDrafts extends Simulation {
       .baseURL(config.getString("baseUrl"))
       .contentTypeHeader("application/json")
 
-  val registerAndSignIn =
-    scenario("Register and sign in")
-      .exec(Idam.registerAndSignIn)
-      .exec(session => {
-        IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
-        session
-      })
+//  val registerAndSignIn =
+//    scenario("Register and sign in")
+//      .exec(Idam.registerAndSignIn)
+//      .exec(session => {
+//        IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
+//        session
+//      })
 
   val createAndReadDrafts =
-    scenario("Create multiple drafts")
-      .feed(
-        Iterator.continually(
-          IdamUserHolder
-            .pop()
-            .map(user =>
-              Map(
-                "email" -> user.email,
-                "user_token" -> user.token
-              )
-            )
-        ).takeWhile(_.nonEmpty).flatten
-      ).exitHereIfFailed
+    scenario("Register and create multiple drafts")
+//      .feed(
+//        Iterator.continually(
+//          IdamUserHolder
+//            .pop()
+//            .map(user =>
+//              Map(
+//                "email" -> user.email,
+//                "user_token" -> user.token
+//              )
+//            )
+//        ).takeWhile(_.nonEmpty).flatten
+//      )
+      .exec(Idam.registerAndSignIn)
+      .pause(2 second, 5 seconds)
+      .exec(session => {
+        Map(
+          "email" -> session("email").as[String],
+          "user_token" -> session("user_token").as[String]
+        )
+        session
+      })
       .exec(leaseServiceToken)
       .during(1.minute)(
         exec(
@@ -58,8 +65,9 @@ class CreateMultipleDrafts extends Simulation {
 
   setUp(
     // Load test over 1 hour - settings
-    registerAndSignIn.inject(rampUsers(3000).over(60.minutes)),
-    createAndReadDrafts.inject(nothingFor(3.minute), rampUsers(3000).over(60.minutes))
+    createAndReadDrafts.inject(rampUsers(10).over(1.minutes))
+    //registerAndSignIn.inject(rampUsers(3000).over(60.minutes)),
+    //createAndReadDrafts.inject(nothingFor(3.minute), rampUsers(3000).over(60.minutes))
     // Regression (pipeline) - settings
     //registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
     //createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
