@@ -55,9 +55,14 @@ class CreateMultipleDrafts extends Simulation {
       .exec(Idam.deleteAccount)
 
   setUp(
-    registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
-    createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
-//    registerAndSignIn.inject(rampUsers(1).over(1.seconds)),
-//    createAndReadDrafts.inject(nothingFor(3.seconds), rampUsers(1).over(1.seconds))
+    // Load test over 1 hour - settings
+    registerAndSignIn.inject(rampUsers(3000).over(600.seconds)),
+    createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(3000).over(600.seconds))
+    // Regression (pipeline) - settings
+    //registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
+    //createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
+    // Single user
+    //registerAndSignIn.inject(rampUsers(1).over(1.seconds)),
+    //createAndReadDrafts.inject(nothingFor(3.seconds), rampUsers(1).over(1.seconds))
   ).protocols(httpProtocol)
 }
