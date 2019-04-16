@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.draftstore
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
@@ -42,7 +44,7 @@ class CreateMultipleDrafts extends Simulation {
               )
             )
         ).takeWhile(_.nonEmpty).flatten
-      )
+      ).exitHereIfFailed
       .exec(leaseServiceToken)
       .during(1.minute)(
         exec(
@@ -55,9 +57,14 @@ class CreateMultipleDrafts extends Simulation {
       .exec(Idam.deleteAccount)
 
   setUp(
-    registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
-    createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
-//    registerAndSignIn.inject(rampUsers(1).over(1.seconds)),
-//    createAndReadDrafts.inject(nothingFor(3.seconds), rampUsers(1).over(1.seconds))
+    // Load test over 1 hour - settings
+    registerAndSignIn.inject(rampUsers(3000).over(60.minutes)),
+    createAndReadDrafts.inject(nothingFor(3.minute), rampUsers(3000).over(60.minutes))
+    // Regression (pipeline) - settings
+    //registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
+    //createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
+    // Single user
+    //registerAndSignIn.inject(rampUsers(1).over(1.seconds)),
+    //createAndReadDrafts.inject(nothingFor(3.seconds), rampUsers(1).over(1.seconds))
   ).protocols(httpProtocol)
 }

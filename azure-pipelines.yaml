@@ -8,6 +8,7 @@ variables:
 
 jobs:
   - job: DraftStorePerfTests
+    timeoutInMinutes: 0
     pool:
       name: mgmt-aks-sandbox
     workspace:
@@ -30,6 +31,7 @@ jobs:
         inputs:
           targetType: inline
           failOnStderr: false
+          continueOnError: true
           script: |
             ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
         env:
