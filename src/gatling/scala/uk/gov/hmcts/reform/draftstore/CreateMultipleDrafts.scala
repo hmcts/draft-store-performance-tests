@@ -21,16 +21,13 @@ class CreateMultipleDrafts extends Simulation {
       .baseURL(config.getString("baseUrl"))
       .contentTypeHeader("application/json")
 
-  val registerAndSignIn =
-    scenario("Register and sign in")
+  val createAndReadDrafts =
+    scenario("Register and create multiple drafts")
       .exec(Idam.registerAndSignIn)
       .exec(session => {
         IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
         session
       })
-
-  val createAndReadDrafts =
-    scenario("Create multiple drafts")
       .feed(
         Iterator.continually(
           IdamUserHolder
@@ -56,8 +53,7 @@ class CreateMultipleDrafts extends Simulation {
 
   setUp(
     // Load test over 1 hour - settings
-    registerAndSignIn.inject(rampUsers(3000).over(60.minutes)),
-    createAndReadDrafts.inject(nothingFor(1.minute), rampUsers(3000).over(60.minutes))
+    createAndReadDrafts.inject(rampUsers(100).over(1.minutes))
     // Regression (pipeline) - settings
     //registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
     //createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
