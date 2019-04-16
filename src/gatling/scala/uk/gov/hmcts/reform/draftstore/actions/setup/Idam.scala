@@ -8,6 +8,7 @@ import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.HeaderNames._
 import io.gatling.http.HeaderValues._
 import io.gatling.http.Predef._
+import scala.concurrent.duration._
 
 
 import scala.util.Random
@@ -49,6 +50,7 @@ object Idam {
       .exec(session => {
         session.set("loginHeader", buildLoginHeader(session("email").as[String], "Pazzw0rd123"))
       })
+      .pause(1.second, 4.seconds)
       .exec(
         http("Sign in to IDAM")
           .post(idamUrl + "/oauth2/authorize")

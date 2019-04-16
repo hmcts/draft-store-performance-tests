@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.draftstore
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
@@ -21,13 +23,16 @@ class CreateMultipleDrafts extends Simulation {
       .baseURL(config.getString("baseUrl"))
       .contentTypeHeader("application/json")
 
-  val createAndReadDrafts =
-    scenario("Register and create multiple drafts")
+  val registerAndSignIn =
+    scenario("Register and sign in")
       .exec(Idam.registerAndSignIn)
       .exec(session => {
         IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
         session
       })
+
+  val createAndReadDrafts =
+    scenario("Create multiple drafts")
       .feed(
         Iterator.continually(
           IdamUserHolder
@@ -39,7 +44,7 @@ class CreateMultipleDrafts extends Simulation {
               )
             )
         ).takeWhile(_.nonEmpty).flatten
-      )
+      ).exitHereIfFailed
       .exec(leaseServiceToken)
       .during(1.minute)(
         exec(
@@ -53,7 +58,8 @@ class CreateMultipleDrafts extends Simulation {
 
   setUp(
     // Load test over 1 hour - settings
-    createAndReadDrafts.inject(rampUsers(100).over(1.minutes))
+    registerAndSignIn.inject(rampUsers(3000).over(60.minutes)),
+    createAndReadDrafts.inject(nothingFor(3.minute), rampUsers(3000).over(60.minutes))
     // Regression (pipeline) - settings
     //registerAndSignIn.inject(rampUsers(100).over(10.seconds)),
     //createAndReadDrafts.inject(nothingFor(30.seconds), rampUsers(100).over(5.seconds))
