@@ -90,12 +90,12 @@ class CreateMultipleDrafts extends Simulation {
 
   setUp(
     // Load test over 1 hour - settings
+    draftsAndCleanUp.inject(rampUsers(1500).over(60.minutes))
     //createAndReadDrafts.inject(rampUsers(3000).over(60.minutes))
     // Regression (pipeline) - settings
-    //createAndReadDrafts.inject(rampUsers(300).over(360.seconds))
+    //draftsAndCleanUp.inject(rampUsers(300).over(360.seconds))
     // Single user
-    //createAndReadDrafts.inject(rampUsers(1).over(1.seconds))
-    draftsAndCleanUp.inject(rampUsers(1).over(1.seconds))
+    //draftsAndCleanUp.inject(rampUsers(1).over(1.seconds))
   ).protocols(httpProtocol)
 
 }
