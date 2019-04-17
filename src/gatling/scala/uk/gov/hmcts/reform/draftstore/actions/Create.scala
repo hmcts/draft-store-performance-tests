@@ -12,6 +12,12 @@ object Create {
 
   val create: ChainBuilder =
     feed(secretFeeder)
+      .exec(session => {
+        Map(
+          "secret" -> session("secret").as[String]
+        )
+        session
+      })
       .exec(
         http("Create draft")
           .post(url = "")
