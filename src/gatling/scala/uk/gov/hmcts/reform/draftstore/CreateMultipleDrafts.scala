@@ -90,6 +90,6 @@ class CreateMultipleDrafts extends Simulation {
   ).protocols(httpProtocol)
 
   after(
-    deleteDraftsAndUser.asLongAs(IdamUserHolder.hasElement())
+    deleteDraftsAndUser.asLongAs(_ => IdamUserHolder.hasElement())
   )
 }
