@@ -29,42 +29,42 @@ class CreateMultipleDrafts extends Simulation {
   
   val createAndReadDrafts =
     scenario("Register and create multiple drafts")
-      feed(secretFeeder)
-        .exec(Idam.registerAndSignIn)
-          .pause(2 second, 5 seconds)
-          .exec(session => {
-            Map(
-              "email" -> session("email").as[String],
-              "user_token" -> session("user_token").as[String]
-            )
-            IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
-            session
-          })
-        .exec(leaseServiceToken)
-          .during(2.minute)(
-            exec(
-              create,
-              pause(2.seconds, 5.seconds),
-              readOne,
-              pause(2.seconds, 5.seconds),
-              update,
-              pause(2.seconds, 5.seconds),
-              readAll,
-              pause(2.seconds, 5.seconds),
-              update,
-              pause(2.seconds, 5.seconds),
-              readAll,
-              pause(2.seconds, 5.seconds),
-              readAll,
-              pause(2.seconds, 5.seconds),
-              update,
-              pause(2.seconds, 5.seconds),
-              readAll,
-              pause(2.seconds, 5.seconds),
-              readAll,
-              pause(2.seconds, 5.seconds)
-            )
+      .feed(secretFeeder)
+      .exec(Idam.registerAndSignIn)
+        .pause(2 second, 5 seconds)
+        .exec(session => {
+          Map(
+            "email" -> session("email").as[String],
+            "user_token" -> session("user_token").as[String]
           )
+          IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
+          session
+        })
+      .exec(leaseServiceToken)
+        .during(2.minute)(
+          exec(
+            create,
+            pause(2.seconds, 5.seconds),
+            readOne,
+            pause(2.seconds, 5.seconds),
+            update,
+            pause(2.seconds, 5.seconds),
+            readAll,
+            pause(2.seconds, 5.seconds),
+            update,
+            pause(2.seconds, 5.seconds),
+            readAll,
+            pause(2.seconds, 5.seconds),
+            readAll,
+            pause(2.seconds, 5.seconds),
+            update,
+            pause(2.seconds, 5.seconds),
+            readAll,
+            pause(2.seconds, 5.seconds),
+            readAll,
+            pause(2.seconds, 5.seconds)
+          )
+        )
 
   val deleteDraftsAndUser =
     scenario("Delete all drafts")

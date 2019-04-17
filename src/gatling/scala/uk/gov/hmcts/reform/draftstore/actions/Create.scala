@@ -8,8 +8,6 @@ import io.gatling.http.Predef._
 
 object Create {
 
-  private val secretFeeder = Iterator.continually(Map("secret" -> UUID.randomUUID.toString))
-
   val create: ChainBuilder =
     exec(
       http("Create draft")
