@@ -5,7 +5,7 @@ import java.util.UUID
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import uk.gov.hmcts.reform.draftstore.actions.Create.{create, secretFeeder}
+import uk.gov.hmcts.reform.draftstore.actions.Create.create
 import uk.gov.hmcts.reform.draftstore.actions.Update.update
 import uk.gov.hmcts.reform.draftstore.actions.DeleteAll.deleteAll
 import uk.gov.hmcts.reform.draftstore.actions.ReadOne.readOne
