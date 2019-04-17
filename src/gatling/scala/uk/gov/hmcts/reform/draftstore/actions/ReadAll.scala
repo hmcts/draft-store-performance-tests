@@ -8,7 +8,7 @@ object ReadAll {
 
   val readAll: ChainBuilder =
     exec(
-      http("Read all user's drafts")
+      http("Read all drafts")
         .get(url = "/")
         .headers(Map(
           "ServiceAuthorization" -> "Bearer ${service_token}",

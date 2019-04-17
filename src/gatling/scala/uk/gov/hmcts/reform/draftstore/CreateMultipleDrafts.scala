@@ -36,9 +36,9 @@ class CreateMultipleDrafts extends Simulation {
         IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
         session
       })
-      .exec(leaseServiceToken)
-      .during(1.minute)(
+      .during(2.minute)(
         exec(
+          leaseServiceToken,
           create,
           pause(2.seconds, 5.seconds),
           readOne,
@@ -47,6 +47,7 @@ class CreateMultipleDrafts extends Simulation {
           pause(2.seconds, 5.seconds),
           readAll,
           pause(2.seconds, 5.seconds),
+          leaseServiceToken,
           update,
           pause(2.seconds, 5.seconds),
           readAll,
@@ -55,6 +56,7 @@ class CreateMultipleDrafts extends Simulation {
           pause(2.seconds, 5.seconds),
           update,
           pause(2.seconds, 5.seconds),
+          leaseServiceToken,
           readAll,
           pause(2.seconds, 5.seconds),
           readAll,
