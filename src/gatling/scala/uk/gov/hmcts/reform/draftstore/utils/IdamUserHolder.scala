@@ -18,6 +18,7 @@ object IdamUserHolder {
     }
   }
 
+  def hasElement(): Boolean = deque.peek() != null
 }
 
 case class User(email: String, token: String)
