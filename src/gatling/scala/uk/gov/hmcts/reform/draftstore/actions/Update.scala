@@ -14,7 +14,6 @@ object Update {
   private val secretFeeder =
     Iterator.continually(
       Map(
-        "secret" -> UUID.randomUUID.toString,
         "update" -> Random.alphanumeric.take(10).mkString
       )
     )
