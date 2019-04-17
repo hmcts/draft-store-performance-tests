@@ -11,38 +11,31 @@ object Create {
   private val secretFeeder = Iterator.continually(Map("secret" -> UUID.randomUUID.toString))
 
   val create: ChainBuilder =
-    feed(secretFeeder)
-      .exec(session => {
-        Map(
-          "secret" -> session("secret").as[String]
-        )
-        session
-      })
-      .exec(
-        http("Create draft")
-          .post(url = "")
-          .headers(Map(
-            "ServiceAuthorization" -> "Bearer ${service_token}",
-            "Authorization" -> "Bearer ${user_token}",
-            "Secret" -> "${secret}"
-          ))
-          .body(
-            StringBody(
-              """
-                |{
-                |  "document": {
-                |    "a": "some value",
-                |    "b": "some other value",
-                |    "c": "yet another",
-                |    "nested": {
-                |      "xxx": "yyy"
-                |    }
-                |  },
-                |  "type": "my type"
-                |}
-              """.stripMargin
-            )
+    exec(
+      http("Create draft")
+        .post(url = "")
+        .headers(Map(
+          "ServiceAuthorization" -> "Bearer ${service_token}",
+          "Authorization" -> "Bearer ${user_token}",
+          "Secret" -> "${secret}"
+        ))
+        .body(
+          StringBody(
+            """
+              |{
+              |  "document": {
+              |    "a": "some value",
+              |    "b": "some other value",
+              |    "c": "yet another",
+              |    "nested": {
+              |      "xxx": "yyy"
+              |    }
+              |  },
+              |  "type": "my type"
+              |}
+            """.stripMargin
           )
-          .check(headerRegex("Location", """/(\d+)$""").saveAs("id"))
-      )
+        )
+        .check(headerRegex("Location", """/(\d+)$""").saveAs("id"))
+    )
 }

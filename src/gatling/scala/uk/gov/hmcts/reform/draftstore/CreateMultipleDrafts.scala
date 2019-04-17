@@ -1,9 +1,11 @@
 package uk.gov.hmcts.reform.draftstore
 
+import java.util.UUID
+
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import uk.gov.hmcts.reform.draftstore.actions.Create.create
+import uk.gov.hmcts.reform.draftstore.actions.Create.{create, secretFeeder}
 import uk.gov.hmcts.reform.draftstore.actions.Update.update
 import uk.gov.hmcts.reform.draftstore.actions.DeleteAll.deleteAll
 import uk.gov.hmcts.reform.draftstore.actions.ReadOne.readOne
@@ -23,44 +25,46 @@ class CreateMultipleDrafts extends Simulation {
       .baseURL(config.getString("baseUrl"))
       .contentTypeHeader("application/json")
 
-
+  private val secretFeeder = Iterator.continually(Map("secret" -> UUID.randomUUID.toString))
+  
   val createAndReadDrafts =
     scenario("Register and create multiple drafts")
-      .exec(Idam.registerAndSignIn)
-      .pause(2 second, 5 seconds)
-      .exec(session => {
-        Map(
-          "email" -> session("email").as[String],
-          "user_token" -> session("user_token").as[String]
-        )
-        IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
-        session
-      })
-    .exec(leaseServiceToken)
-      .during(2.minute)(
-        exec(
-          create,
-          pause(2.seconds, 5.seconds),
-          readOne,
-          pause(2.seconds, 5.seconds),
-          update,
-          pause(2.seconds, 5.seconds),
-          readAll,
-          pause(2.seconds, 5.seconds),
-          update,
-          pause(2.seconds, 5.seconds),
-          readAll,
-          pause(2.seconds, 5.seconds),
-          readAll,
-          pause(2.seconds, 5.seconds),
-          update,
-          pause(2.seconds, 5.seconds),
-          readAll,
-          pause(2.seconds, 5.seconds),
-          readAll,
-          pause(2.seconds, 5.seconds)
-        )
-      )
+      feed(secretFeeder)
+        .exec(Idam.registerAndSignIn)
+          .pause(2 second, 5 seconds)
+          .exec(session => {
+            Map(
+              "email" -> session("email").as[String],
+              "user_token" -> session("user_token").as[String]
+            )
+            IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
+            session
+          })
+        .exec(leaseServiceToken)
+          .during(2.minute)(
+            exec(
+              create,
+              pause(2.seconds, 5.seconds),
+              readOne,
+              pause(2.seconds, 5.seconds),
+              update,
+              pause(2.seconds, 5.seconds),
+              readAll,
+              pause(2.seconds, 5.seconds),
+              update,
+              pause(2.seconds, 5.seconds),
+              readAll,
+              pause(2.seconds, 5.seconds),
+              readAll,
+              pause(2.seconds, 5.seconds),
+              update,
+              pause(2.seconds, 5.seconds),
+              readAll,
+              pause(2.seconds, 5.seconds),
+              readAll,
+              pause(2.seconds, 5.seconds)
+            )
+          )
 
   val deleteDraftsAndUser =
     scenario("Delete all drafts")
