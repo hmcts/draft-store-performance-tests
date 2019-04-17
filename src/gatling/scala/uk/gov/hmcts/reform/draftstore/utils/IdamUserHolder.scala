@@ -18,6 +18,10 @@ object IdamUserHolder {
     }
   }
 
+  def hasElement(): Boolean = deque.peek() != null
+
+  def size(): Int = deque.size()
+
 }
 
 case class User(email: String, token: String)

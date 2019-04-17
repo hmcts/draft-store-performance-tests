@@ -6,12 +6,15 @@ import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 
-object Create {
+import scala.util.Random
 
-  val create: ChainBuilder =
+
+object Update {
+
+  val update: ChainBuilder =
     exec(
-      http("Create draft")
-        .post(url = "")
+      http("Update draft")
+        .put(url = "/${id}")
         .headers(Map(
           "ServiceAuthorization" -> "Bearer ${service_token}",
           "Authorization" -> "Bearer ${user_token}",
@@ -19,21 +22,21 @@ object Create {
         ))
         .body(
           StringBody(
-            """
+            s"""
               |{
               |  "document": {
-              |    "a": "some value",
-              |    "b": "some other value",
-              |    "c": "yet another",
+              |    "a": "some updated value",
+              |    "b": "some other updated value",
+              |    "c": "yet another update",
               |    "nested": {
-              |      "xxx": "yyy"
+              |      "xxx": "zzz"
               |    }
               |  },
-              |  "type": "my type"
+              |  "type": "my updated type"
               |}
             """.stripMargin
           )
         )
-        .check(headerRegex("Location", """/(\d+)$""").saveAs("id"))
+        .check(status.is(204))
     )
 }
