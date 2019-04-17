@@ -37,7 +37,7 @@ class CreateMultipleDrafts extends Simulation {
         session
       })
       .exec(leaseServiceToken)
-      .during(2.minutes)(
+      .during(1.minute)(
         exec(
           create,
           pause(2.seconds, 5.seconds),
@@ -64,21 +64,27 @@ class CreateMultipleDrafts extends Simulation {
 
   val deleteDraftsAndUser =
     scenario("Delete all drafts")
-      .feed(
-        Iterator.continually(
-          IdamUserHolder
-            .pop()
-            .map(user =>
-              Map(
-                "email" -> user.email,
-                "user_token" -> user.token
+      .asLongAs(IdamUserHolder.hasElement()) {
+        feed(
+          Iterator.continually(
+            IdamUserHolder
+              .pop()
+              .map(user =>
+                Map(
+                  "email" -> user.email,
+                  "user_token" -> user.token
+                )
               )
-            )
-        ).takeWhile(_.nonEmpty).flatten
-      )
-      .exec(deleteAll)
-      .exec(Idam.deleteAccount)
+          ).takeWhile(_.nonEmpty).flatten
+        )
+        .exec(deleteAll)
+        .exec(Idam.deleteAccount)
+      }
 
+  val draftsAndCleanUp =
+    scenario("Use draft store and then clean up")
+        .exec(createAndReadDrafts)
+        .exec(deleteDraftsAndUser)
 
   setUp(
     // Load test over 1 hour - settings
@@ -86,10 +92,8 @@ class CreateMultipleDrafts extends Simulation {
     // Regression (pipeline) - settings
     //createAndReadDrafts.inject(rampUsers(300).over(360.seconds))
     // Single user
-    createAndReadDrafts.inject(rampUsers(1).over(1.seconds))
+    //createAndReadDrafts.inject(rampUsers(1).over(1.seconds))
+    draftsAndCleanUp.inject(rampUsers(1).over(1.seconds))
   ).protocols(httpProtocol)
 
-  after(
-    deleteDraftsAndUser.inject(rampUsers(IdamUserHolder.size()).over(1.seconds))
-  )
 }
