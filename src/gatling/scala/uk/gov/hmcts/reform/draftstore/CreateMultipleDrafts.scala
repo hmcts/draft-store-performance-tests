@@ -41,34 +41,34 @@ class CreateMultipleDrafts extends Simulation {
           session
         })
       .exec(leaseServiceToken)
-        .during(2.minute)(
-          exec(
-            create,
-            pause(2.seconds, 5.seconds),
-            readOne,
-            pause(2.seconds, 5.seconds),
-            update,
-            pause(2.seconds, 5.seconds),
-            readAll,
-            pause(2.seconds, 5.seconds),
-            update,
-            pause(2.seconds, 5.seconds),
-            readAll,
-            pause(2.seconds, 5.seconds),
-            readAll,
-            pause(2.seconds, 5.seconds),
-            update,
-            pause(2.seconds, 5.seconds),
-            readAll,
-            pause(2.seconds, 5.seconds),
-            readAll,
-            pause(2.seconds, 5.seconds)
-          )
+      .during(2.minute)(
+        exec(
+          create,
+          pause(2.seconds, 5.seconds),
+          readOne,
+          pause(2.seconds, 5.seconds),
+          update,
+          pause(2.seconds, 5.seconds),
+          readAll,
+          pause(2.seconds, 5.seconds),
+          update,
+          pause(2.seconds, 5.seconds),
+          readAll,
+          pause(2.seconds, 5.seconds),
+          readAll,
+          pause(2.seconds, 5.seconds),
+          update,
+          pause(2.seconds, 5.seconds),
+          readAll,
+          pause(2.seconds, 5.seconds),
+          readAll,
+          pause(2.seconds, 5.seconds)
         )
+      )
 
   val deleteDraftsAndUser =
     scenario("Delete all drafts")
-      .asLongAs(IdamUserHolder.hasElement()) {
+      .doWhile(IdamUserHolder.hasElement()) {
         feed(
           Iterator.continually(
             IdamUserHolder
