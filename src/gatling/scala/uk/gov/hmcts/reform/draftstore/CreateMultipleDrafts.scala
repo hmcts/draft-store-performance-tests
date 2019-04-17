@@ -26,7 +26,7 @@ class CreateMultipleDrafts extends Simulation {
       .contentTypeHeader("application/json")
 
   private val secretFeeder = Iterator.continually(Map("secret" -> UUID.randomUUID.toString))
-  
+
   val createAndReadDrafts =
     scenario("Register and create multiple drafts")
       .feed(secretFeeder)
@@ -68,7 +68,7 @@ class CreateMultipleDrafts extends Simulation {
 
   val deleteDraftsAndUser =
     scenario("Delete all drafts")
-      feed(
+      .feed(
         Iterator.continually(
           IdamUserHolder
             .pop()
