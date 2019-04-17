@@ -68,22 +68,20 @@ class CreateMultipleDrafts extends Simulation {
 
   val deleteDraftsAndUser =
     scenario("Delete all drafts")
-      .doWhile(IdamUserHolder.hasElement()) {
-        feed(
-          Iterator.continually(
-            IdamUserHolder
-              .pop()
-              .map(user =>
-                Map(
-                  "email" -> user.email,
-                  "user_token" -> user.token
-                )
+      feed(
+        Iterator.continually(
+          IdamUserHolder
+            .pop()
+            .map(user =>
+              Map(
+                "email" -> user.email,
+                "user_token" -> user.token
               )
-          ).takeWhile(_.nonEmpty).flatten
-        )
-        .exec(deleteAll)
-        .exec(Idam.deleteAccount)
-      }
+            )
+        ).takeWhile(_.nonEmpty).flatten
+      )
+      .exec(deleteAll)
+      .exec(Idam.deleteAccount)
 
   val draftsAndCleanUp =
     scenario("Use draft store and then clean up")
