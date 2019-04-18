@@ -37,7 +37,7 @@ class CreateMultipleDrafts extends Simulation {
             "email" -> session("email").as[String],
             "user_token" -> session("user_token").as[String]
           )
-          IdamUserHolder.push(User(session("email").as[String], session("user_token").as[String]))
+          IdamUserHolder.add(User(session("email").as[String], session("user_token").as[String]))
           session
         })
       .exec(leaseServiceToken)
@@ -71,7 +71,7 @@ class CreateMultipleDrafts extends Simulation {
       .feed(
         Iterator.continually(
           IdamUserHolder
-            .pop()
+            .poll()
             .map(user =>
               Map(
                 "email" -> user.email,
@@ -87,7 +87,7 @@ class CreateMultipleDrafts extends Simulation {
   val draftsAndCleanUp =
     scenario("Use draft store and then clean up")
         .exec(createAndReadDrafts)
-        .pause(30.minutes)
+        .pause(45.minutes)
         .exec(deleteDraftsAndUser)
 
   setUp(
