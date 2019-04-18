@@ -68,7 +68,7 @@ class CreateMultipleDrafts extends Simulation {
 
   val deleteDraftsAndUser =
     scenario("Delete all drafts")
-      .asLongAs(IdamUserHolder.hasElement()) {
+      .asLongAs(_ => IdamUserHolder.hasElement()) {
         feed(
           Iterator.continually(
             IdamUserHolder
