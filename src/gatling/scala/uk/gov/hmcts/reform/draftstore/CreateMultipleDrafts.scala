@@ -81,13 +81,13 @@ class CreateMultipleDrafts extends Simulation {
         ).takeWhile(_.nonEmpty).flatten
       )
       .exec(deleteAll)
-      .pause(5.seconds, 10.seconds)
+      .pause(1.seconds, 3.seconds)
       .exec(Idam.deleteAccount)
 
   val draftsAndCleanUp =
     scenario("Use draft store and then clean up")
         .exec(createAndReadDrafts)
-        .pause(45.minutes)
+        .pause(30.minutes)
         .exec(deleteDraftsAndUser)
 
   setUp(
