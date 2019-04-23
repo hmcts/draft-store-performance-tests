@@ -89,7 +89,7 @@ class CreateMultipleDrafts extends Simulation {
   val draftsAndCleanUp =
     scenario("Use draft store and then clean up")
         .exec(createAndReadDrafts)
-        .pause(30.minutes)
+        .pause(45.minutes)
         .exec(deleteDraftsAndUser)
 
   setUp(
