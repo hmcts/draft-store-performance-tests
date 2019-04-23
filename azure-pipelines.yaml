@@ -42,6 +42,9 @@ jobs:
           IDAM_URL: http://idam-api-idam-sprod.service.core-compute-idam-sprod.internal
           IDAM_CLIENT_SECRET: $(idam-client-secret-for-tests)
           IDAM_REDIRECT_URI: https://cmc-citizen-frontend-sprod-staging.service.core-compute-sprod.internal/receiver
+          TEST_USERS: 1500
+          TEST_RAMP_UP_SECS: 3600
+          TEST_CLEAN_UP_DELAY_SECS: 3300
       - task: PublishPipelineArtifact@0
         inputs:
           artifactName: 'gatlingReport'

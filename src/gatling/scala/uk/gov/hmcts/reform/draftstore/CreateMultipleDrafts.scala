@@ -20,6 +20,11 @@ class CreateMultipleDrafts extends Simulation {
 
   val config = ConfigFactory.load()
 
+  private val testUsers = config.getInt("params.testUsers")
+  private val testRampUpSecs = config.getInt("params.testRampUpSecs")
+  private val testCleanUpDelaySecs = config.getInt("params.testCleanUpDelaySecs")
+
+
   val httpProtocol =
     http
       .baseURL(config.getString("baseUrl"))
@@ -89,12 +94,12 @@ class CreateMultipleDrafts extends Simulation {
   val draftsAndCleanUp =
     scenario("Use draft store and then clean up")
         .exec(createAndReadDrafts)
-        .pause(55.minutes)
+        .pause(testCleanUpDelaySecs.seconds)
         .exec(deleteDraftsAndUser)
 
   setUp(
     // Load test over 1 hour - settings
-    draftsAndCleanUp.inject(rampUsers(1500).over(60.minutes))
+    draftsAndCleanUp.inject(rampUsers(testUsers).over(testRampUpSecs.seconds))
     //createAndReadDrafts.inject(rampUsers(3000).over(60.minutes))
     // Regression (pipeline) - settings
     //draftsAndCleanUp.inject(rampUsers(300).over(360.seconds))
