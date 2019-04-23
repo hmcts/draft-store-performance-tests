@@ -24,7 +24,6 @@ object LeaseServiceToken {
   private val serviceConcreteNameFeeder =
     Iterator.continually(
       Map(
-        "service_name" -> ("service_" + Random.nextInt(10)),
         "totp" -> authenticator.getTotpPassword(s2sSecret)
       )
     )
@@ -62,8 +61,15 @@ object LeaseServiceToken {
       .exec(
         http("Lease service token")
           .post(s2sUrl + "/testing-support/lease")
-          .header(ContentType, ApplicationFormUrlEncoded)
-          .formParam("microservice", "${service_name}")
+          .header(ContentType, ApplicationJson)
+          .header(Accept, TextPlain)
+          .body(StringBody(
+            """
+                {
+                  "microservice": "${service_name}"
+                }
+            """
+          ))
           .check(bodyString.saveAs("service_token"))
       )
 

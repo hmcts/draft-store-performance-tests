@@ -44,7 +44,7 @@ jobs:
           IDAM_REDIRECT_URI: https://cmc-citizen-frontend-sprod-staging.service.core-compute-sprod.internal/receiver
           TEST_USERS:  5 #1500
           TEST_RAMP_UP_SECS: 15 #3600
-          TEST_CLEAN_UP_DELAY_SECS: 160 #3300
+          TEST_CLEAN_UP_DELAY_SECS: 30 #3300
       - task: PublishPipelineArtifact@0
         inputs:
           artifactName: 'gatlingReport'
