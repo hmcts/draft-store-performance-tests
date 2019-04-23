@@ -13,13 +13,15 @@ import scala.util.Random
 
 object LeaseServiceToken {
 
-  private val s2sUrl = ConfigFactory.load().getString("auth.s2s.url")
-  private val s2sTesting = ConfigFactory.load().getBoolean("auth.s2s.testing")
-  private val s2sSecret = ConfigFactory.load().getString("auth.s2s.secret")
+  val config = ConfigFactory.load()
+
+  private val s2sUrl =  config.getString("auth.s2s.url")
+  private val s2sTesting = config.getBoolean("auth.s2s.testing")
+  private val s2sSecret = config.getString("auth.s2s.secret")
 
   private val authenticator = new GoogleAuthenticator()
 
-  private val serviceNameFeeder =
+  private val serviceConcreteNameFeeder =
     Iterator.continually(
       Map(
         "service_name" -> ("service_" + Random.nextInt(10)),
@@ -30,8 +32,8 @@ object LeaseServiceToken {
   /**
     * Calls S2S service to retrieve service token later used in auth headers sent to draft-store
     */
-  val leaseServiceToken: ChainBuilder =
-    feed(serviceNameFeeder)
+  private val leaseConcreteServiceToken: ChainBuilder =
+    feed(serviceConcreteNameFeeder)
       .exec(
         http("Lease service token")
           .post(s2sUrl + "/lease")
@@ -47,4 +49,25 @@ object LeaseServiceToken {
           ))
           .check(bodyString.saveAs("service_token"))
       )
+
+
+  private val serviceTestNameFeeder =
+    Iterator.continually(Map("service_name" -> ("service_" + Random.nextInt(10))))
+
+  /**
+    * Calls S2S testing support service to retrieve (a fake) service token
+    */
+  private val leaseTestServiceToken: ChainBuilder =
+    feed(serviceTestNameFeeder)
+      .exec(
+        http("Lease service token")
+          .post(s2sUrl + "/testing-support/lease")
+          .header(ContentType, ApplicationFormUrlEncoded)
+          .formParam("microservice", "${service_name}")
+          .check(bodyString.saveAs("service_token"))
+      )
+
+
+  val leaseServiceToken: ChainBuilder = if(s2sTesting) leaseTestServiceToken else leaseConcreteServiceToken
+
 }
