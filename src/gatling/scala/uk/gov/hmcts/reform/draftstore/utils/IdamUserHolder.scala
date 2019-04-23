@@ -18,6 +18,19 @@ object IdamUserHolder {
     }
   }
 
+  def add(user: User): Unit = deque.add(user)
+
+  def poll(): Option[User] = synchronized {
+    deque.peek() match {
+      case null => None
+      case _ => Some(deque.poll())
+    }
+  }
+
+  def hasElement(): Boolean = deque.peek() != null
+
+  def size(): Int = deque.size()
+
 }
 
 case class User(email: String, token: String)

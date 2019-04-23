@@ -1,0 +1,54 @@
+name: draft-store-perf-test
+trigger: none
+pr: none
+variables:
+  S2sKeyvaultName: 's2s-sprod'
+  DraftStoreKeyVaultName: 'draft-store-sprod'
+  serviceConnection: 'azurerm-sandbox'
+  testUsers:  5 #1500
+  testRampUpSecs: 15 #3600
+  testCleanUpDelaySecs: 30 #3300
+
+jobs:
+  - job: DraftStorePerfTests
+    timeoutInMinutes: 0
+    pool:
+      name: mgmt-aks-sandbox
+    workspace:
+      clean: all
+    steps:
+      - task: AzureKeyVault@1
+        displayName: 'Get secrets from s2s Keyvault'
+        inputs:
+          azureSubscription: $(serviceConnection)
+          keyVaultName: $(S2sKeyvaultName)
+          secretsFilter: 'microservicekey-draftStoreTests'
+      - task: AzureKeyVault@1
+        displayName: 'Get secrets from draft-store keyvault'
+        inputs:
+          azureSubscription: $(serviceConnection)
+          keyVaultName: $(DraftStoreKeyvaultName)
+          secretsFilter: 'idam-client-secret-for-tests'
+      - task: Bash@3
+        displayName: 'Execute Gatling Tests'
+        inputs:
+          targetType: inline
+          failOnStderr: false
+          continueOnError: true
+          script: |
+            ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
+        env:
+          DRAFT_STORE_BASE_URL: http://draft-store-service-sprod.service.core-compute-sprod.internal/drafts
+          S2S_URL: https://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal
+          S2S_TESTING: false
+          S2S_SECRET: $(microservicekey-draftStoreTests)
+          IDAM_URL: http://idam-api-idam-sprod.service.core-compute-idam-sprod.internal
+          IDAM_CLIENT_SECRET: $(idam-client-secret-for-tests)
+          IDAM_REDIRECT_URI: https://cmc-citizen-frontend-sprod-staging.service.core-compute-sprod.internal/receiver
+          TEST_USERS:  $(testUsers)
+          TEST_RAMP_UP_SECS: $(testRampUpSecs)
+          TEST_CLEAN_UP_DELAY_SECS: $(testCleanUpDelaySecs)
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'gatlingReport'
+          targetPath: 'build/reports'
