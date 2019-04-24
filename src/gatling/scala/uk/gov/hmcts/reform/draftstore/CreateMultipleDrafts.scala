@@ -27,7 +27,7 @@ class CreateMultipleDrafts extends Simulation {
 
   val httpProtocol =
     http
-      .baseURL(config.getString("baseUrl"))
+      .baseUrl(config.getString("baseUrl"))
       .contentTypeHeader("application/json")
 
   private val secretFeeder = Iterator.continually(Map("secret" -> UUID.randomUUID.toString))
@@ -99,12 +99,7 @@ class CreateMultipleDrafts extends Simulation {
 
   setUp(
     // Load test over 1 hour - settings
-    draftsAndCleanUp.inject(rampUsers(testUsers).over(testRampUpSecs.seconds))
-    //createAndReadDrafts.inject(rampUsers(3000).over(60.minutes))
-    // Regression (pipeline) - settings
-    //draftsAndCleanUp.inject(rampUsers(300).over(360.seconds))
-    // Single user
-    //draftsAndCleanUp.inject(rampUsers(1).over(1.seconds))
+    draftsAndCleanUp.inject(rampUsers(testUsers).during(testRampUpSecs.seconds))
   ).protocols(httpProtocol)
 
 }
