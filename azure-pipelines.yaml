@@ -5,6 +5,7 @@ variables:
   S2sKeyvaultName: 's2s-sprod'
   DraftStoreKeyVaultName: 'draft-store-sprod'
   serviceConnection: 'azurerm-sandbox'
+  s2sTesting: false
   testUsers:  5 #1500
   testRampUpSecs: 15 #3600
   testCleanUpDelaySecs: 30 #3300
@@ -40,7 +41,7 @@ jobs:
         env:
           DRAFT_STORE_BASE_URL: http://draft-store-service-sprod.service.core-compute-sprod.internal/drafts
           S2S_URL: https://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal
-          S2S_TESTING: false
+          S2S_TESTING: $(s2sTesting)
           S2S_SECRET: $(microservicekey-draftStoreTests)
           IDAM_URL: http://idam-api-idam-sprod.service.core-compute-idam-sprod.internal
           IDAM_CLIENT_SECRET: $(idam-client-secret-for-tests)
