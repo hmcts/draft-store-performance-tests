@@ -5,9 +5,9 @@ variables:
   DraftStoreKeyVaultName: 'draft-store-sprod'
   serviceConnection: 'azurerm-sandbox'
   s2sTesting: false
-  testUsers:  5 #1500
-  testRampUpSecs: 15 #3600
-  testCleanUpDelaySecs: 30 #3300
+  testUsers:  1500
+  testRampUpSecs: 3600
+  testCleanUpDelaySecs: 3800
 
 jobs:
   - job: DraftStorePerfTests
@@ -32,7 +32,7 @@ jobs:
           script: |
             ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
         env:
-          DRAFT_STORE_BASE_URL: http://draft-store-service-sprod.service.core-compute-sprod.internal/drafts
+          DRAFT_STORE_BASE_URL: http://draft-store-service.service.core-compute-sprod.internal/drafts
           S2S_URL_FOR_TESTS: https://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal
           USE_S2S_TESTING_SUPPORT: $(s2sTesting)
           S2S_SECRET_FOR_TESTS: $(s2s-secret-for-tests)
