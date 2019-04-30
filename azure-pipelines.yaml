@@ -7,7 +7,7 @@ variables:
   s2sTesting: false
   testUsers:  1500
   testRampUpSecs: 3600
-  testCleanUpDelaySecs: 3300
+  testCleanUpDelaySecs: 3800
 
 jobs:
   - job: DraftStorePerfTests
