@@ -5,7 +5,7 @@ variables:
   DraftStoreKeyVaultName: 'draft-store-sprod'
   serviceConnection: 'azurerm-sandbox'
   s2sTesting: false
-  testUsers:  1500
+  testUsers:  3000
   testRampUpSecs: 3600
   testCleanUpDelaySecs: 3800
 
