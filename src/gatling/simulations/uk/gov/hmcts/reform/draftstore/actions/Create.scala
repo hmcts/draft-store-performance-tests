@@ -20,7 +20,7 @@ object Create {
             "Secret" -> "${secret}"
           ))
           .body(
-            RawFileBody("${draft_file}")
+            StringBody("${draft_file}")
           )
           .check(headerRegex("Location", """/(\d+)$""").saveAs("id"))
     )
