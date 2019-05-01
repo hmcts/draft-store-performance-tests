@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.draftstore.actions
 
-import java.io.File
-
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
