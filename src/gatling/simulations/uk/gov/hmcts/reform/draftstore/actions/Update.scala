@@ -18,7 +18,7 @@ object Update {
             "Secret" -> "${secret}"
           ))
           .body(
-            StringBody("${draft_file}")
+            StringBody(RawFileBody("${draft_file}").toString())
           )
           .check(status.is(204))
     )

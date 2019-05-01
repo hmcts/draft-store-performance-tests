@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.draftstore.actions.setup
 
-import scala.io.Source
 import scala.util.Random
 
 object Draft {
@@ -12,6 +11,6 @@ object Draft {
     "os-discouraged.json"
   )
     
-  val draftsFeeder = Iterator.continually(Map("draft_file" -> Source.fromFile("resources/gatling/".concat(drafts(Random.nextInt(drafts.length)))).getLines.mkString))
+  val draftsFeeder = Iterator.continually(Map("draft_file" -> drafts(Random.nextInt(drafts.length))))
 
 }
