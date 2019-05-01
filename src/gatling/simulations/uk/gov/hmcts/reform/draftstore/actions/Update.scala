@@ -19,7 +19,7 @@ object Update {
           ))
           .body(
             RawFileBody("${draft_file}")
-          ).asJson
+          )
           .check(status.is(204))
     )
 }

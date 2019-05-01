@@ -21,7 +21,7 @@ object Create {
           ))
           .body(
             RawFileBody("${draft_file}")
-          ).asJson
+          )
           .check(headerRegex("Location", """/(\d+)$""").saveAs("id"))
     )
 }
