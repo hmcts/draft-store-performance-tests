@@ -18,7 +18,7 @@ object Update {
             "Secret" -> "${secret}"
           ))
           .body(
-            ElFileBody("${draft_file}")
+            RawFileBody("${draft_file}")
           )
           .check(status.is(204))
     )

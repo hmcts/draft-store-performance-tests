@@ -18,7 +18,7 @@ object Create {
             "Secret" -> "${secret}"
           ))
           .body(
-            ElFileBody("${draft_file}")
+            RawFileBody("${draft_file}")
           )
           .check(headerRegex("Location", """/(\d+)$""").saveAs("id"))
     )
