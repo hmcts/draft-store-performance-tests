@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.draftstore.actions
 
+import java.io.File
+
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
@@ -9,10 +11,6 @@ object Create {
 
   val create: ChainBuilder =
     feed(Draft.draftsFeeder)
-      .exec { session =>
-        println(session("draft_file").as[String])
-        session
-      }
       .exec(
         http("Create draft")
           .post(url = "")
