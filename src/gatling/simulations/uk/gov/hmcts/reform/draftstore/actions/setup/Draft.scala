@@ -11,6 +11,6 @@ object Draft {
     "os-popular.json", "os-redundant.json", "os-retired.json",
     "os-discouraged.json")
     
-  val draftsFeeder = Iterator.continually(Map("draft_file" -> "drafts/".concat(drafts(Random.nextInt(10)))))
+  val draftsFeeder = Iterator.continually(Map("draft_file" -> "drafts/".concat(drafts(Random.nextInt(drafts.length)))))
 
 }

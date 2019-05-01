@@ -9,6 +9,10 @@ object Create {
 
   val create: ChainBuilder =
     feed(Draft.draftsFeeder)
+      .exec { session =>
+        println(session("draft_file").as[String])
+        session
+      }
       .exec(
         http("Create draft")
           .post(url = "")
