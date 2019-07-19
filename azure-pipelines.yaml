@@ -3,19 +3,17 @@ trigger: none
 pr: none
 variables:
   DraftStoreKeyVaultName: 'draft-store-sprod'
-  serviceConnection:
   s2sTesting: false
   testUsers:
   testRampUpSecs:
   testCleanUpDelaySecs:
   draftStoreBaseUrl:
-  agentPool:
 
 jobs:
   - job: DraftStorePerfTests
     timeoutInMinutes: 0
     pool:
-      name: hmcts-agent-pool
+      name: $(agentPool)
     workspace:
       clean: all
     steps:
