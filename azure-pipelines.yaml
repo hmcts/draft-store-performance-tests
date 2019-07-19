@@ -37,7 +37,7 @@ jobs:
           DRAFT_STORE_BASE_URL: ${{ parameters.drafStoreBaseUrl }}
           S2S_URL_FOR_TESTS: ${{ parameters.s2sUrl }}
           USE_S2S_TESTING_SUPPORT: ${{ parameters.s2sTesting }}
-          S2S_SECRET_FOR_TESTS: ${{ parameters.s2sUrl }}
+          S2S_SECRET_FOR_TESTS: $(s2s-secret-for-tests)
           IDAM_URL_FOR_TESTS: ${{ parameters.idamUrl }}
           IDAM_CLIENT_SECRET_FOR_TESTS: $(idam-client-secret-for-tests)
           IDAM_REDIRECT_URI_FOR_TESTS: ${{ parameters.idamRedirectUrl }}
