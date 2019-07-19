@@ -11,7 +11,7 @@ variables:
   draftStoreBaseUrl: http://draft-store-service.service.core-compute-aat.internal/drafts
   draftStoreKeyVaultName: draft-store-aat
   s2sUrl: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-  idamUrl: https://idam-api-idam-aat.service.core-compute-idam-aat.internal
+  idamUrl: https://idam-api.aat.platform.hmcts.net
   idamRedirectUrl: https://cmc-citizen-frontend-aat-staging.service.core-compute-aat.internal/receiver
 
 jobs:
