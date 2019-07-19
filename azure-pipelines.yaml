@@ -15,7 +15,7 @@ jobs:
   - job: DraftStorePerfTests
     timeoutInMinutes: 0
     pool:
-      name: $(agentPool)
+      name: hmcts-agent-pool
     workspace:
       clean: all
     steps:
