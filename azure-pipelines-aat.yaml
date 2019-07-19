@@ -1,0 +1,30 @@
+name: draft-store-perf-test-aat
+trigger: none
+pr: none
+variables:
+  s2sTesting: false
+  agentPool: hmcts-agent-pool
+  serviceConnection: azurerm-nonprod
+  testUsers: 5
+  testRampUpSecs: 15
+  testCleanUpDelaySecs: 30
+  draftStoreBaseUrl: http://draft-store-service.service.core-compute-aat.internal/drafts
+  draftStoreKeyVaultName: draft-store-aat
+  s2sUrl: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+  idamUrl: http://idam-api-idam-aat.service.core-compute-idam-aat.internal
+  idamRedirectUrl: https://cmc-citizen-frontend-aat-staging.service.core-compute-aat.internal/receiver
+
+jobs:
+  - template: azure-pipelines.yaml
+    parameters:
+      s2sTesting: $(s2sTesting)
+      agentPool: $(agentPool)
+      serviceConnection: $(serviceConnection)
+      testUsers: $(testUsers)
+      testRampUpSecs: $(testRampUpSecs)
+      testCleanUpDelaySecs: $(testCleanUpDelaySecs)
+      draftStoreBaseUrl: $(draftStoreBaseUrl)
+      draftStoreKeyVaultName: $(draftStoreKeyVaultName)
+      s2sUrl: $(s2sUrl)
+      idamUrl: $(idamUrl)
+      idamRedirectUrl: $(idamRedirectUrl)
