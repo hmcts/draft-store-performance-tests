@@ -34,7 +34,7 @@ jobs:
           script: |
             ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
         env:
-          DRAFT_STORE_BASE_URL: ${{ parameters.drafStoreBaseUrl }}
+          DRAFT_STORE_BASE_URL: ${{ parameters.draftStoreBaseUrl }}
           S2S_URL_FOR_TESTS: ${{ parameters.s2sUrl }}
           USE_S2S_TESTING_SUPPORT: ${{ parameters.s2sTesting }}
           S2S_SECRET_FOR_TESTS: $(s2s-secret-for-tests)
