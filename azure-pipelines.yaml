@@ -3,13 +3,13 @@ trigger: none
 pr: none
 variables:
   DraftStoreKeyVaultName: 'draft-store-sprod'
-  serviceConnection: 'azurerm-sandbox'
+  serviceConnection:
   s2sTesting: false
-  testUsers:  5 #1500
-  testRampUpSecs: 15 #3600
-  testCleanUpDelaySecs: 30 #3300
-  draftStoreBaseUrl: 
-  agentPool: mgmt-aks-sandbox
+  testUsers:
+  testRampUpSecs:
+  testCleanUpDelaySecs:
+  draftStoreBaseUrl:
+  agentPool:
 
 jobs:
   - job: DraftStorePerfTests
