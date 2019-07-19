@@ -2,12 +2,7 @@ name: draft-store-perf-test
 trigger: none
 pr: none
 variables:
-  DraftStoreKeyVaultName: 'draft-store-sprod'
   s2sTesting: false
-  testUsers:
-  testRampUpSecs:
-  testCleanUpDelaySecs:
-  draftStoreBaseUrl:
 
 jobs:
   - job: DraftStorePerfTests
