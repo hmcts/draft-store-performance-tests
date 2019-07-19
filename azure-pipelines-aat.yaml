@@ -5,9 +5,6 @@ variables:
   s2sTesting: false
   agentPool: hmcts-agent-pool
   serviceConnection: azurerm-nonprod
-  testUsers: 5
-  testRampUpSecs: 15
-  testCleanUpDelaySecs: 30
   draftStoreBaseUrl: http://draft-store-service.service.core-compute-aat.internal/drafts
   draftStoreKeyVaultName: draft-store-aat
   s2sUrl: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
@@ -20,9 +17,9 @@ jobs:
       s2sTesting: $(s2sTesting)
       agentPool: $(agentPool)
       serviceConnection: $(serviceConnection)
-      testUsers: $(testUsers)
-      testRampUpSecs: $(testRampUpSecs)
-      testCleanUpDelaySecs: $(testCleanUpDelaySecs)
+      testUsers: $(testUsers)                        # from UI
+      testRampUpSecs: $(testRampUpSecs)              # from UI
+      testCleanUpDelaySecs: $(testCleanUpDelaySecs)  # from UI
       draftStoreBaseUrl: $(draftStoreBaseUrl)
       draftStoreKeyVaultName: $(draftStoreKeyVaultName)
       s2sUrl: $(s2sUrl)
