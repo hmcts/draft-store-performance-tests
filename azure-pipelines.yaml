@@ -1,27 +1,29 @@
-name: draft-store-perf-test
-trigger: none
-pr: none
-variables:
-  DraftStoreKeyVaultName: 'draft-store-sprod'
-  serviceConnection: 'azurerm-sandbox'
-  s2sTesting: false
-  testUsers:  5 #1500
-  testRampUpSecs: 15 #3600
-  testCleanUpDelaySecs: 30 #3300
+parameters:
+  s2sTesting: ''
+  agentPool: ''
+  serviceConnection: ''
+  testUsers: ''
+  testRampUpSecs: ''
+  testCleanUpDelaySecs: ''
+  draftStoreBaseUrl: ''
+  draftStoreKeyVaultName: ''
+  s2sUrl: ''
+  idamUrl: ''
+  idamRedirectUrl: ''
 
 jobs:
   - job: DraftStorePerfTests
     timeoutInMinutes: 0
     pool:
-      name: mgmt-aks-sandbox
+      name: ${{ parameters.agentPool }}
     workspace:
       clean: all
     steps:
       - task: AzureKeyVault@1
         displayName: 'Get secrets from draft-store keyvault'
         inputs:
-          azureSubscription: $(serviceConnection)
-          keyVaultName: $(DraftStoreKeyvaultName)
+          azureSubscription: ${{ parameters.serviceConnection }}
+          keyVaultName: ${{ parameters.draftStoreKeyvaultName }}
           secretsFilter: 'idam-client-secret-for-tests,s2s-secret-for-tests'
       - task: Bash@3
         displayName: 'Execute Gatling Tests'
@@ -32,16 +34,16 @@ jobs:
           script: |
             ./gradlew --no-daemon gatlingRun-uk.gov.hmcts.reform.draftstore.CreateMultipleDrafts
         env:
-          DRAFT_STORE_BASE_URL: http://draft-store-service-sprod.service.core-compute-sprod.internal/drafts
-          S2S_URL_FOR_TESTS: https://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal
-          USE_S2S_TESTING_SUPPORT: $(s2sTesting)
+          DRAFT_STORE_BASE_URL: ${{ parameters.draftStoreBaseUrl }}
+          S2S_URL_FOR_TESTS: ${{ parameters.s2sUrl }}
+          USE_S2S_TESTING_SUPPORT: ${{ parameters.s2sTesting }}
           S2S_SECRET_FOR_TESTS: $(s2s-secret-for-tests)
-          IDAM_URL_FOR_TESTS: http://idam-api-idam-sprod.service.core-compute-idam-sprod.internal
+          IDAM_URL_FOR_TESTS: ${{ parameters.idamUrl }}
           IDAM_CLIENT_SECRET_FOR_TESTS: $(idam-client-secret-for-tests)
-          IDAM_REDIRECT_URI_FOR_TESTS: https://cmc-citizen-frontend-sprod-staging.service.core-compute-sprod.internal/receiver
-          TEST_USERS:  $(testUsers)
-          TEST_RAMP_UP_SECS: $(testRampUpSecs)
-          TEST_CLEAN_UP_DELAY_SECS: $(testCleanUpDelaySecs)
+          IDAM_REDIRECT_URI_FOR_TESTS: ${{ parameters.idamRedirectUrl }}
+          TEST_USERS:  ${{ parameters.testUsers }}
+          TEST_RAMP_UP_SECS: ${{ parameters.testRampUpSecs }}
+          TEST_CLEAN_UP_DELAY_SECS: ${{ parameters.testCleanUpDelaySecs }}
       - task: PublishPipelineArtifact@0
         inputs:
           artifactName: 'gatlingReport'
