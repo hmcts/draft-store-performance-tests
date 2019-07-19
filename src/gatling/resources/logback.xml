@@ -7,7 +7,7 @@
     </encoder>
   </appender>
   <!-- Uncomment for logging ALL HTTP request and responses -->
-<<logger name="io.gatling.http.engine.response" level="TRACE" />
+<logger name="io.gatling.http.engine.response" level="TRACE" />
   <!-- Uncomment for logging ONLY FAILED HTTP request and responses -->
     <logger name="io.gatling.http.engine.response" level="DEBUG" />
   <root level="WARN">
