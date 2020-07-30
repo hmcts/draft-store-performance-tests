@@ -1,0 +1,27 @@
+name: draft-store-perf-test-aat
+trigger: none
+pr: none
+variables:
+  s2sTesting: false
+  agentPool: hmcts-agent-pool
+  serviceConnection: azurerm-nonprod
+  draftStoreBaseUrl: http://draft-store-service.service.core-compute-perftest.internal/drafts
+  draftStoreKeyVaultName: draft-store-perftest
+  s2sUrl: https://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal
+  idamUrl: https://idam-api.perftest.platform.hmcts.net
+  idamRedirectUrl: https://cmc-citizen-frontend-perftest-staging.service.core-compute-perftest.internal/receiver
+
+jobs:
+  - template: azure-pipelines.yaml
+    parameters:
+      s2sTesting: $(s2sTesting)
+      agentPool: $(agentPool)
+      serviceConnection: $(serviceConnection)
+      testUsers: $(testUsers)                        # from UI
+      testRampUpSecs: $(testRampUpSecs)              # from UI
+      testCleanUpDelaySecs: $(testCleanUpDelaySecs)  # from UI
+      draftStoreBaseUrl: $(draftStoreBaseUrl)
+      draftStoreKeyVaultName: $(draftStoreKeyVaultName)
+      s2sUrl: $(s2sUrl)
+      idamUrl: $(idamUrl)
+      idamRedirectUrl: $(idamRedirectUrl)
