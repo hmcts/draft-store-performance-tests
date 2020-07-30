@@ -7,9 +7,9 @@ variables:
   serviceConnection: azurerm-qa
   draftStoreBaseUrl: http://draft-store-service.service.core-compute-perftest.internal/drafts
   draftStoreKeyVaultName: draft-store-perftest
-  s2sUrl: https://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal
+  s2sUrl: http://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal
   idamUrl: https://idam-api.perftest.platform.hmcts.net
-  idamRedirectUrl: https://cmc-citizen-frontend-perftest-staging.service.core-compute-perftest.internal/receiver
+  idamRedirectUrl: http://cmc-citizen-frontend-perftest.service.core-compute-perftest.internal/receiver
 
 jobs:
   - template: azure-pipelines.yaml
