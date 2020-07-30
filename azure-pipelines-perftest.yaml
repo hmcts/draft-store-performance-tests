@@ -4,7 +4,7 @@ pr: none
 variables:
   s2sTesting: false
   agentPool: hmcts-agent-pool
-  serviceConnection: azurerm-nonprod
+  serviceConnection: azurerm-qa
   draftStoreBaseUrl: http://draft-store-service.service.core-compute-perftest.internal/drafts
   draftStoreKeyVaultName: draft-store-perftest
   s2sUrl: https://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal
