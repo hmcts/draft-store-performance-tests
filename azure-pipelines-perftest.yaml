@@ -8,8 +8,9 @@ variables:
   draftStoreBaseUrl: http://draft-store-service.service.core-compute-perftest.internal/drafts
   draftStoreKeyVaultName: draft-store-perftest
   s2sUrl: http://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal
+  idamClientId: ccd_gateway
   idamUrl: https://idam-api.perftest.platform.hmcts.net
-  idamRedirectUrl: http://cmc-citizen-frontend-perftest.service.core-compute-perftest.internal/receiver
+  idamRedirectUrl: https://www-ccd.perftest.platform.hmcts.net/oauth2redirect
 
 jobs:
   - template: azure-pipelines.yaml
@@ -23,5 +24,6 @@ jobs:
       draftStoreBaseUrl: $(draftStoreBaseUrl)
       draftStoreKeyVaultName: $(draftStoreKeyVaultName)
       s2sUrl: $(s2sUrl)
+      idamClientId: $(idamClientId)
       idamUrl: $(idamUrl)
       idamRedirectUrl: $(idamRedirectUrl)
