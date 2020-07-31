@@ -5,7 +5,7 @@ variables:
   s2sTesting: false
   agentPool: hmcts-agent-pool
   serviceConnection: azurerm-nonprod
-  draftStoreBaseUrl: http://draft-store-service.service.core-compute-aat.internal/drafts
+  draftStoreBaseUrl: http://draft-store-service-aat.service.core-compute-aat.internal/drafts
   draftStoreKeyVaultName: draft-store-aat
   s2sUrl: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
   idamClientId: cmc_citizen

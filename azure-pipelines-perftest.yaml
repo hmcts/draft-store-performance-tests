@@ -5,7 +5,7 @@ variables:
   s2sTesting: false
   agentPool: hmcts-cftptl-agent-pool
   serviceConnection: azurerm-qa
-  draftStoreBaseUrl: http://draft-store-service.service.core-compute-perftest.internal/drafts
+  draftStoreBaseUrl: http://draft-store-service-perftest.service.core-compute-perftest.internal/drafts
   draftStoreKeyVaultName: draft-store-perftest
   s2sUrl: http://rpe-service-auth-provider-perftest.service.core-compute-perftest.internal
   idamClientId: ccd_gateway
